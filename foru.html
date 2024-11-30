@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>for u</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #754F44; /* Коричневый фон */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        #container {
+            background-color: #754F44;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        #text {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            color: black;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid black;
+            width: 0;
+            animation: typing 3s steps(30, end), blink 0.5s step-end infinite alternate;
+        }
+        #image {
+            display: none;
+            width: 50%;
+            height: auto;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            right: -32%;
+            transform: translateY(-50%);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+        #image:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        #new-text {
+            display: none;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            color: black;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid black;
+            width: 0;
+            position: absolute;
+            left: -40%;
+            animation: typing-infinite 6s steps(40, end) infinite, blink 0.5s step-end infinite alternate;
+        }
+        #question {
+            display: none;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
+            color: black;
+            position: absolute;
+            bottom: 10%;
+            text-align: center;
+        }
+        .answer-button {
+            background-color: #976456;
+            color: black;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: 2px solid #754F44;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .answer-button:hover {
+            background-color: #9c7165;
+            color: #ffffff;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        @keyframes typing-infinite {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+        /* Flash Effect */
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            opacity: 0;
+            pointer-events: none;
+            animation: flash-animation 0.5s ease-out forwards;
+        }
+
+        @keyframes flash-animation {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="text">Stay still and smile my dear</div>
+        <img id="image" src="https://i.postimg.cc/3rS4VPJC/photo-2024-11-30-02-51-22.jpg">
+        <div id="new-text">And you got the music, you got the music in you, Don’t you?</div>
+        <div id="question">
+            <p>Will you date me, honey?</p>
+            <button id="yes-button" class="answer-button" onclick="handleAnswer('yes')">Yes</button>
+            <button id="no-button" class="answer-button" onclick="handleAnswer('no')">No</button>
+        </div>
+    </div>
+    <audio id="audio" src="https://ia601200.us.archive.org/5/items/lll-lana-del-rey-west-coast-radio-edit/lll%20Lana%20Del%20Rey%20-%20West%20Coast%20%28Radio%20Edit%29.mp3" preload="auto"></audio>
+    <audio id="flash-sound" src="https://ia601407.us.archive.org/3/items/all-every-iphone-system-and-ui-sound-effec3t/all-every-iphone-system-and-ui-sound-effec3t.mp3" preload="auto"></audio> <!-- Replace with actual sound URL -->
+
+    <script>
+        let isClicked = false;
+
+        document.body.addEventListener('click', () => {
+            if (!isClicked) {
+                isClicked = true;
+
+                const audio = document.getElementById('audio');
+                audio.play().catch(error => console.log("Не удалось воспроизвести музыку:", error));
+
+                setTimeout(() => {
+                    // Create the flash effect
+                    const flash = document.createElement('div');
+                    flash.classList.add('flash');
+                    document.body.appendChild(flash);
+
+                    // Play the flash sound
+                    const flashSound = document.getElementById('flash-sound');
+                    flashSound.play().catch(error => console.log("Не удалось воспроизвести звук вспышки:", error));
+
+                    // Remove the flash effect after it finishes
+                    setTimeout(() => {
+                        flash.remove();
+                    }, 500);
+
+                    document.getElementById('text').style.display = 'none';
+                    document.getElementById('image').style.display = 'block';
+                    document.getElementById('new-text').style.display = 'block';
+
+                    setTimeout(() => {
+                        document.getElementById('question').style.display = 'block';
+                    }, 4000);
+                }, 5000);
+            }
+        });
+
+        function handleAnswer(answer) {
+            const yesButton = document.getElementById('yes-button');
+            const noButton = document.getElementById('no-button');
+
+            if (answer === 'yes') {
+                yesButton.textContent = "Yes, my love!";
+            } else if (answer === 'no') {
+                noButton.textContent = "Yes, my darling!";
+            }
+        }
+    </script>
+</body>
+</html>
